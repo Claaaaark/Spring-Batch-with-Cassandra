@@ -6,22 +6,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.context.annotation.Import;
 
 import com.google.common.collect.ImmutableSet;
-
 import com.naddy.configuration.BatchConfiguration;
-
 import com.naddy.entity.Company;
 import com.naddy.entity.Person;
-
 import com.naddy.model.Opinions;
-
 import com.naddy.repository.CompanyRepository;
 
 @SpringBootApplication

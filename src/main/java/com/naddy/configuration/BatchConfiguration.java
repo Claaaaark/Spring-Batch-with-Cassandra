@@ -1,7 +1,5 @@
 package com.naddy.configuration;
 
-import javax.sql.DataSource;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -12,22 +10,16 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.naddy.batch.CassandraBatchItemReader;
 import com.naddy.batch.CassandraBatchItemWriter;
 import com.naddy.batch.CompanyItemProcessor;
-
 import com.naddy.entity.Company;
 
 @Configuration
@@ -44,7 +36,7 @@ public class BatchConfiguration {
     private StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public ItemReader<Company> reader(final DataSource dataSource) {
+    public ItemReader<Company> reader() {
         final CassandraBatchItemReader<Company> reader = new CassandraBatchItemReader<Company>(Company.class);
         return reader;
     }
@@ -55,7 +47,7 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public ItemWriter<Company> writer(final DataSource dataSource) {
+    public ItemWriter<Company> writer() {
         final CassandraBatchItemWriter<Company> writer = new CassandraBatchItemWriter<Company>(Company.class);
         return writer;
     }
@@ -70,10 +62,5 @@ public class BatchConfiguration {
             final ItemWriter<Company> writer, final ItemProcessor<Company, Company> processor) {
         return stepBuilderFactory.get("stepOne").<Company, Company>chunk(100).reader(reader).processor(processor)
                                  .writer(writer).build();
-    }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate(final DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
     }
 }
